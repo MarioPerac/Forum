@@ -60,7 +60,14 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
                 if(authentication.isAuthenticated()){
                     return jwtService.generateToken(userRequest.getUsername());
                 }
-
                 return null;
+    }
+
+    public User findByUsername(String username){
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        User user = modelMapper.map(userEntity, User.class);
+        user.setRole(userEntity.getRoleByRoleId().getName());
+        return user;
     }
 }

@@ -19,7 +19,7 @@ public class CommentEntity implements BaseEntity<Integer> {
     private String content;
     @Basic
     @Column(name = "date_time")
-    private Timestamp dateTime;
+    private Timestamp dateTime = new Timestamp(System.currentTimeMillis());
     @Basic
     @Column(name = "area_id")
     private Integer areaId;

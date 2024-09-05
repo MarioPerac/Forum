@@ -6,8 +6,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.unibl.etf.sni.forum.models.entites.UserEntity;
-
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -39,7 +37,7 @@ public class JwtService {
                 .claims()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date((System.currentTimeMillis() + 1000 * 60 * 10 )))
+                .expiration(new Date((System.currentTimeMillis() + 1000 * 60 * 60 * 24 )))
                 .and()
                 .signWith(getKey())
                 .compact();

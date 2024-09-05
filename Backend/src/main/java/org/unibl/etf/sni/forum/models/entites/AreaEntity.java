@@ -17,5 +17,5 @@ public class AreaEntity {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "areaId")
-    private Collection<CommentEntity> commentsById;
+    private Collection<CommentEntity> comments;
 }

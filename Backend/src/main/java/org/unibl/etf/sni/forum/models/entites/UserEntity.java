@@ -31,10 +31,10 @@ public class UserEntity implements BaseEntity<String>, UserDetails {
     private String mail;
     @Basic
     @Column(name = "activated")
-    private Boolean activated;
+    private Boolean activated = true;
     @Basic
     @Column(name = "role_id")
-    private Integer roleId;
+    private Integer roleId  = 2;
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable=false, updatable=false)
     private RoleEntity roleByRoleId;
