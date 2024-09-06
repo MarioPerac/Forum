@@ -35,13 +35,11 @@ public class SecurityConfig {
     private UserService userService;
 
     private JwtFilter jwtFilter;
-    private CorsConfigurationSource corsConfigurationSource;
 
 
-    public SecurityConfig(@Lazy UserService userService, JwtFilter jwtFilter, CorsConfigurationSource corsConfigurationSource){
+    public SecurityConfig(@Lazy UserService userService, JwtFilter jwtFilter){
         this.userService = userService;
         this.jwtFilter = jwtFilter;
-        this.corsConfigurationSource = corsConfigurationSource;
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
