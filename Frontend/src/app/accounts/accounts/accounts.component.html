@@ -1,0 +1,25 @@
+<app-toolbar></app-toolbar>
+<div class="user-list">
+    <div *ngIf="users.length > 0; else noAccounts">
+        <div *ngFor="let user of users" class="user-card">
+            <h3>{{ user.name }} {{ user.surname }}</h3>
+            <label>Username:</label>
+            <p> {{ user.username }}</p>
+            <label>Email:</label>
+            <p>{{ user.mail }}</p>
+            <label for="role">Role:</label>
+            <select id="role" [(ngModel)]="user.role">
+                <option *ngFor=" let role of roles" [value]="role">{{ role }}</option>
+            </select>
+
+            <div class="button-group">
+                <button class="active" (click)="onActivate(user)" [disabled]="user.activated">Activate</button>
+                <button class="inactive" (click)="onDeny(user)">Deny</button>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noAccounts>
+        <p>No accounts.</p>
+    </ng-template>
+</div>

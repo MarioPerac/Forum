@@ -9,4 +9,5 @@ public class Comment {
     private String content;
     private String username;
     private Timestamp dateTime;
+    private Integer areaId;
 }

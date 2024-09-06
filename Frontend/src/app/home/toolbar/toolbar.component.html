@@ -6,6 +6,9 @@
     <span class="example-spacer"></span>
     <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="onHomeClick()">Home</button>
+        <button mat-menu-item *ngIf="role == 'ROLE_ADMIN' || role == 'ROLE_MODERATOR'"
+            (click)="onControlClick()">Control</button>
+        <button mat-menu-item *ngIf="role == 'ROLE_ADMIN'" (click)=" onAccountsClick()">Accounts</button>
         <button mat-menu-item (click)="onLogoutClick()">Log out</button>
     </mat-menu>
 </mat-toolbar>

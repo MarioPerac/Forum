@@ -28,7 +28,7 @@ public class CommentEntity implements BaseEntity<Integer> {
     private String username;
     @Basic
     @Column(name = "published")
-    private Boolean published = true;
+    private Boolean published = false;
     @Basic
     @Column(name = "forbidden")
     private Boolean forbidden = false;

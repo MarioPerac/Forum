@@ -38,7 +38,13 @@ export class LoginComponent implements OnInit {
           this.snackBar.open("Incorrect credentials", undefined, {
             duration: 2000
           });
-        } else {
+        }
+        else if (error.status === 401) {
+          this.snackBar.open("Account is not activated", undefined, {
+            duration: 2000
+          });
+        }
+        else {
 
           console.error('Error during login:', error);
           this.snackBar.open("An error occurred. Please try again.", undefined, {

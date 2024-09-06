@@ -12,8 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.unibl.etf.sni.forum.base.CrudJpaService;
+import org.unibl.etf.sni.forum.models.dto.Mail;
 import org.unibl.etf.sni.forum.models.dto.User;
 import org.unibl.etf.sni.forum.models.entites.UserEntity;
+import org.unibl.etf.sni.forum.models.requests.ActivationRequest;
 import org.unibl.etf.sni.forum.models.requests.UserRequest;
 import org.unibl.etf.sni.forum.repositories.UserRepository;
 
@@ -28,18 +30,21 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
 
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
+    private MailService mailService;
 
     public UserService(UserRepository userRepository,
                        ModelMapper modelMapper,
                        BCryptPasswordEncoder encoder,
                        @Lazy AuthenticationManager authenticationManager,
-                       JwtService jwtService) {
+                       JwtService jwtService,
+                       MailService mailService) {
         super(userRepository, UserEntity.class, modelMapper);
 
         this.userRepository =userRepository;
         this.encoder = encoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -60,6 +65,10 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
     public String login(UserRequest userRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRequest.getUsername(),userRequest.getPassword()));
 
+        UserEntity userEntity = userRepository.findByUsername(userRequest.getUsername());
+        if(userEntity == null || userEntity.getActivated() == null || !userEntity.getActivated()){
+            return null;
+        }
                 if(authentication.isAuthenticated()){
                     return jwtService.generateToken(userRequest.getUsername());
                 }
@@ -79,12 +88,35 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
     }
 
     public List<User> getUnactivatedUsers(){
-        List<UserEntity> entities = userRepository.getAllByActivated(false);
+        List<UserEntity> entities = userRepository.getAllByActivated(null);
 
         return entities.stream().map(e -> {
             User user = modelMapper.map(e, User.class);
             user.setRole(e.getRoleByRoleId().getName());
             return user;
         }).collect(Collectors.toList());
+    }
+
+    public void setActivated(String username, ActivationRequest request){
+         UserEntity userEntity = userRepository.findByUsername(username);
+        userEntity.setActivated(request.getActivated());
+        userEntity.setRoleId(request.getRoleId());
+        userEntity = userRepository.saveAndFlush(userEntity);
+        entityManager.refresh(userEntity);
+
+        final UserEntity modifiedUser = userEntity;
+        new Thread(() -> {
+            String fullName = modifiedUser.getName() +  " " + modifiedUser.getSurname();
+            String subject = "Forum - Activation response";
+            String htmlContent ="<html>"
+                    + "<body>"
+                    + "<p>Dear " + fullName + ",</p>"
+                    + "<p>Your account request is: " +( request.getActivated() ? "ACTIVATED, role= " + modifiedUser.getRoleByRoleId().getName() + ".": "DENIED.") +"</p>"
+                    + "<p>Kind regards,</p>"
+                    + "<p>Forum</p>"
+                    + "</body>"
+                    + "</html>";
+            mailService.sendMail(new Mail(modifiedUser.getMail(), subject, fullName, modifiedUser.getUsername(), htmlContent));
+        }).start();
     }
 }

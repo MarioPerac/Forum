@@ -22,6 +22,17 @@ const routes: Routes = [
   {
     path: 'area/:name',
     loadChildren: () => import('./comments/comments.module').then(mod => mod.CommentsModule)
+  },
+  {
+    path: 'accounts',
+    loadChildren: () => import('./accounts/accounts.module').then(mod => mod.AccountsModule),
+    canActivate: [GuardService]
+  }
+  ,
+  {
+    path: 'control',
+    loadChildren: () => import('./control/control.module').then(mod => mod.ControlModule),
+    canActivate: [GuardService]
   }
 ];
 

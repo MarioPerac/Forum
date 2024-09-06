@@ -1,0 +1,28 @@
+<app-toolbar></app-toolbar>
+<div class="comment-list">
+    <div *ngIf="comments.length > 0; else noComments">
+        <div *ngFor="let comment of comments" class="comment-card">
+            <h3>Username: {{ comment.username }}</h3>
+            <div *ngIf="editingCommentId === comment.id; else viewMode">
+                <textarea [(ngModel)]="editedContent" rows="4" cols="50"></textarea>
+                <div class="button-group">
+                    <button (click)="saveEdit(comment)">Save</button>
+                    <button (click)="cancelEdit()">Cancel</button>
+                </div>
+            </div>
+            <ng-template #viewMode>
+                <p>{{ comment.content }}</p>
+                <p>Date: {{ comment.dateTime }}</p>
+                <div class="button-group">
+                    <button (click)="startEditing(comment)">Edit</button>
+                    <button class="active" (click)="onPublish(comment)" [disabled]="comment.published">Publish</button>
+                    <button class="inactive" (click)="onForbidden(comment)"
+                        [disabled]="comment.forbidden">Forbid</button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <ng-template #noComments>
+        <p>No new comments.</p>
+    </ng-template>
+</div>

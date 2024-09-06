@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     UserEntity findByUsername(String username);
 
     List<UserEntity> getAllByActivated(Boolean activated);
+
 }

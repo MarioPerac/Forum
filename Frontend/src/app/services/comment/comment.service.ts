@@ -19,7 +19,15 @@ export class CommentService {
     return this.http.get<Comment[]>(url);
   }
 
-  create(comment: CommentRequest){
+  create(comment: CommentRequest) {
     return this.http.post<Comment>(this.commentsUrl, comment);
+  }
+
+  getNew() {
+    return this.http.get<Comment[]>(this.commentsUrl + "/new");
+  }
+
+  update(comment: Comment) {
+    return this.http.put(this.commentsUrl, comment);
   }
 }

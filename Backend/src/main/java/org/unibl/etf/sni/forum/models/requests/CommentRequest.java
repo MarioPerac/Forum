@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @Data
 public class CommentRequest {
-
+    private Integer id;
     private String content;
     private Integer areaId;
     private String username;
