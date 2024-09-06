@@ -9,11 +9,17 @@ import { Observable } from 'rxjs';
 })
 export class CommentService {
 
-  private apiUrl = 'http://localhost:8080/api/comments';
+  private commentsUrl = 'http://localhost:8080/api/comments';
 
+  private areaUrl = 'http://localhost:8080/api/area';
   constructor(private http: HttpClient) { }
 
-  get(areaName: string) {
-    return this.http.get<Comment[]>(this.apiUrl);
+  get(name: string) {
+    const url = `${this.areaUrl}/${name}/comments`;
+    return this.http.get<Comment[]>(url);
+  }
+
+  create(comment: CommentRequest){
+    return this.http.post<Comment>(this.commentsUrl, comment);
   }
 }

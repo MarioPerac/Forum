@@ -1,9 +1,6 @@
 package org.unibl.etf.sni.forum.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.sni.forum.models.dto.Comment;
 import org.unibl.etf.sni.forum.services.AreaService;
 
@@ -19,7 +16,7 @@ public class AreaController {
         this.areaService = areaService;
     }
     @GetMapping("/{name}/comments")
-    public List<Comment> getComments(@RequestParam String name){
+    public List<Comment> getComments(@PathVariable String name){
         return areaService.getComments(name);
     }
 }

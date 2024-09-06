@@ -17,6 +17,9 @@ import org.unibl.etf.sni.forum.models.entites.UserEntity;
 import org.unibl.etf.sni.forum.models.requests.UserRequest;
 import org.unibl.etf.sni.forum.repositories.UserRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService extends CrudJpaService<UserEntity, String> implements UserDetailsService {
 
@@ -69,5 +72,19 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
         User user = modelMapper.map(userEntity, User.class);
         user.setRole(userEntity.getRoleByRoleId().getName());
         return user;
+    }
+
+    public String getRole(String username){
+        return userRepository.findByUsername(username).getRoleByRoleId().getName();
+    }
+
+    public List<User> getUnactivatedUsers(){
+        List<UserEntity> entities = userRepository.getAllByActivated(false);
+
+        return entities.stream().map(e -> {
+            User user = modelMapper.map(e, User.class);
+            user.setRole(e.getRoleByRoleId().getName());
+            return user;
+        }).collect(Collectors.toList());
     }
 }

@@ -1,19 +1,25 @@
 <app-toolbar></app-toolbar>
-<div *ngIf="comments.length > 0; else noComments">
-    <div *ngFor="let comment of comments" class="comment-card">
-        <h4>Username: {{ comment.username }}</h4>
-        <p>{{ comment.content }}</p>
-        <small>{{ comment.dateTime }}</small>
+<div class="comment-container">
+    <div *ngIf="comments.length > 0; else noComments">
+        <div *ngFor="let comment of comments" class="comment-card">
+            <h3>{{ comment.username }}</h3>
+            <p>{{ comment.content }}</p>
+            <small>{{ comment.dateTime }}</small>
+        </div>
     </div>
+
+    <ng-template #noComments>
+        <p>No comments available.</p>
+    </ng-template>
 </div>
+<div class="comment-form">
 
-<ng-template #noComments>
-    <p>No comments available.</p>
-</ng-template>
+    <form (ngSubmit)="submitComment()" #commentForm="ngForm">
+        <div>
+            <textarea id="content" [(ngModel)]="newComment.content" placeholder="Comment" name="content"
+                required></textarea>
+        </div>
+        <button type="submit" [disabled]="!commentForm.form.valid">Submit</button>
+    </form>
 
-<form (ngSubmit)="submitComment()" #commentForm="ngForm">
-    <div>
-        <textarea id="content" [(ngModel)]="newComment.content" placeholder="Comment" name="content" required></textarea>
-    </div>
-    <button type="submit" [disabled]="!commentForm.form.valid">Submit</button>
-</form>
+</div>

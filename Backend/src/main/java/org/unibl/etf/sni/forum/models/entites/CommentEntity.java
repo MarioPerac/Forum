@@ -28,10 +28,10 @@ public class CommentEntity implements BaseEntity<Integer> {
     private String username;
     @Basic
     @Column(name = "published")
-    private Boolean published;
+    private Boolean published = true;
     @Basic
     @Column(name = "forbidden")
-    private Boolean forbidden;
+    private Boolean forbidden = false;
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = false, insertable=false, updatable=false)
     private UserEntity userByUsername;

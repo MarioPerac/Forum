@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Program } from '../../models/program.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,18 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUserPrograms(username: string): Observable<Program[]> {
-    const url = this.apiUrl + "/" + username + "/programs";
-    return this.http.get<Program[]>(url);
-  }
-
-  getUserActviePrograms(username: string) {
-    const url = this.apiUrl + "/" + username + "/programs/active";
-    return this.http.get<Program[]>(url);
-  }
-
-  getUserFinishedPrograms(username: string) {
-    const url = this.apiUrl + "/" + username + "/programs/finished";
-    return this.http.get<Program[]>(url);
+  getRole(): Observable<string> {
+    return this.http.get<string>(this.apiUrl + "/role");
   }
 }

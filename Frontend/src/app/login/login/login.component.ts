@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   public login(form: any) {
+    localStorage.clear();
     this.loginService.login(new Login(form.value.username, form.value.password)).subscribe({
       next: (response: any) => {
         localStorage.setItem("token", response.token);

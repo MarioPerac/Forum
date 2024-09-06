@@ -4,16 +4,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.sni.forum.base.CrudController;
 import org.unibl.etf.sni.forum.models.dto.User;
 import org.unibl.etf.sni.forum.models.requests.UserRequest;
 import org.unibl.etf.sni.forum.services.UserService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +41,18 @@ public class UserController extends CrudController<String, UserRequest, User> {
            return ResponseEntity.ok(data);
        }
        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+   }
+
+   @GetMapping("/role")
+    public String getRole(){
+       String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+       return userService.getRole(username);
+   }
+
+   @GetMapping("/unactivated")
+    public List<User> getAllUnactivated(){
+       return userService.getUnactivatedUsers();
    }
 
 }
