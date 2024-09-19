@@ -16,6 +16,7 @@ import org.unibl.etf.sni.forum.models.dto.Mail;
 import org.unibl.etf.sni.forum.models.dto.User;
 import org.unibl.etf.sni.forum.models.entites.UserEntity;
 import org.unibl.etf.sni.forum.models.requests.ActivationRequest;
+import org.unibl.etf.sni.forum.models.requests.LoginRequest;
 import org.unibl.etf.sni.forum.models.requests.UserRequest;
 import org.unibl.etf.sni.forum.repositories.UserRepository;
 
@@ -62,15 +63,16 @@ public class UserService extends CrudJpaService<UserEntity, String> implements U
         return modelMapper.map(userEntity, User.class);
     }
 
-    public String login(UserRequest userRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRequest.getUsername(),userRequest.getPassword()));
+    public String login(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
 
-        UserEntity userEntity = userRepository.findByUsername(userRequest.getUsername());
+        UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername());
+        System.out.println(userEntity.toString());
         if(userEntity == null || userEntity.getActivated() == null || !userEntity.getActivated()){
             return null;
         }
                 if(authentication.isAuthenticated()){
-                    return jwtService.generateToken(userRequest.getUsername());
+                    return jwtService.generateToken(loginRequest.getUsername());
                 }
                 return null;
     }
