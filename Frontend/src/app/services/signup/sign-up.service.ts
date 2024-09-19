@@ -8,7 +8,7 @@ import { User } from '../../models/user.model';
 })
 export class SignUpService {
 
-  private apiUrl = 'http://localhost:8080/api/users/register';
+  private apiUrl = 'https://localhost:8080/api/users/register';
   constructor(private http: HttpClient) { }
 
   public signUp(user: User): Observable<boolean> {

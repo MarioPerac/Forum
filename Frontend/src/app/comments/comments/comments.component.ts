@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CommentsComponent implements OnInit {
 
   comments!: Comment[];
-  areaName!: string; 
+  areaName!: string;
   newComment!: CommentRequest;
 
   constructor(private route: ActivatedRoute, private commentService: CommentService, private snackBar: MatSnackBar) { }
@@ -46,10 +46,9 @@ export class CommentsComponent implements OnInit {
     if (!this.newComment.content.trim()) {
       return;
     }
-  
+
     this.commentService.create(this.newComment).subscribe({
-      next: (comment: Comment) =>{
-        this.comments.push(comment);
+      next: (comment: Comment) => {
         this.snackBar.open("Comment added.", undefined, {
           duration: 2000
         });
