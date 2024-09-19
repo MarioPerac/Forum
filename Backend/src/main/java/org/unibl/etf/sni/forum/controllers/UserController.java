@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.sni.forum.base.CrudController;
 import org.unibl.etf.sni.forum.models.dto.User;
 import org.unibl.etf.sni.forum.models.requests.ActivationRequest;
-import org.unibl.etf.sni.forum.models.requests.LoginRequest;
 import org.unibl.etf.sni.forum.models.requests.UserRequest;
 import org.unibl.etf.sni.forum.services.UserService;
 
@@ -34,12 +33,9 @@ public class UserController {
    }
 
    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-//       LoginRequest loginRequest = new LoginRequest();
-//       loginRequest.setUsername("mario");
-//       loginRequest.setPassword("mario");
-       System.out.println(loginRequest);
-       String token = userService.login(loginRequest);
+    public ResponseEntity<?> login(@RequestBody UserRequest userRequest, HttpServletResponse response){
+       String token = userService.login(userRequest);
+
        if (token != null) {
            Map<String, String> data = new HashMap<>();
            data.put("token", token);
