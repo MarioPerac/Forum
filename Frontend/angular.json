@@ -72,11 +72,6 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "options": {
-            "ssl": true,
-            "sslKey": "C:/Users/Perac/Desktop/VII semestar/SNI/ProjectTask/Forum/Frontend/localhost.key",
-            "sslCert": "C:/Users/Perac/Desktop/VII semestar/SNI/ProjectTask/Forum/Frontend/localhost.crt"
-          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {

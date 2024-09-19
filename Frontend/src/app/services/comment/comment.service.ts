@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
 })
 export class CommentService {
 
-  private commentsUrl = 'https://localhost:8080/api/comments';
+  private commentsUrl = 'http://localhost:8080/api/comments';
 
-  private areaUrl = 'https://localhost:8080/api/area';
+  private areaUrl = 'http://localhost:8080/api/area';
   constructor(private http: HttpClient) { }
 
   get(name: string) {

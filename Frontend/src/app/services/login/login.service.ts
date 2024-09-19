@@ -8,7 +8,7 @@ import { catchError, map, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'https://localhost:8080/api/users/login';
+  private apiUrl = 'http://localhost:8080/api/users/login';
 
 
   public user: User | null = null;

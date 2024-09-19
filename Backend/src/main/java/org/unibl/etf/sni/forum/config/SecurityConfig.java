@@ -30,29 +30,27 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+
     private UserService userService;
 
     private JwtFilter jwtFilter;
 
-    private WebApplicationFirewallFilter waf;
 
-    public SecurityConfig(@Lazy UserService userService, JwtFilter jwtFilter, WebApplicationFirewallFilter waf){
+    public SecurityConfig(@Lazy UserService userService, JwtFilter jwtFilter){
         this.userService = userService;
         this.jwtFilter = jwtFilter;
-        this.waf = waf;
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
                 .csrf(customizer -> customizer.disable())
                 .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/users/login", "/api/users/register")
-                       .permitAll()
-                       .anyRequest().authenticated()
+                        .permitAll()
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(waf, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -61,7 +59,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://localhost:4200"));
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));
